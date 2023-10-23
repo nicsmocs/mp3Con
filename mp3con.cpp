@@ -1,5 +1,9 @@
 #include <filesystem>
 #include <iostream>
+#include <mutex>
+#include <thread>
+#include <cstring>
+#include <vector>
 #include "nicsmocs.h"
 #include "lame.h"
 
@@ -82,7 +86,7 @@ void convertToMp3(const std::string& fileName, const std::string& folder)
 	fclose(pcm);
 }
 
-void process(std::vector<std::string>* fileNames, const std::string& outputPath, int tId)
+bool process(std::vector<std::string>* fileNames, const std::string& outputPath, int tId)
 {
 	for (;;)
 	{
@@ -98,6 +102,7 @@ void process(std::vector<std::string>* fileNames, const std::string& outputPath,
 		convertToMp3(target, outputPath);
 		std::cout << "Done converting " << target << " (t" << tId << ")" << std::endl;
 	}
+	return true;
 }
 
 std::vector<std::string> getInputFiles(const std::string& path)
